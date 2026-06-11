@@ -1,17 +1,19 @@
 import type { ThemeConfig } from "antd";
 import { IncidentStatus, Priority } from "./api/types";
 
-/** Brand palette — modern enterprise service-management look. */
+/** Khadamatech brand palette — emerald primary with a deep-green enterprise shell. */
 export const brand = {
-  primary: "#2563eb",
-  primaryDark: "#1d4ed8",
-  navy900: "#0b1b34",
-  navy800: "#0f2444",
-  navy700: "#13294b",
-  surface: "#f4f6fb",
-  border: "#e6e9f0",
-  text: "#0f172a",
-  textMuted: "#64748b",
+  primary: "#047551",
+  primaryDark: "#035c40",
+  primaryLight: "#0a9e6e",
+  accent: "#0d9488",
+  shell900: "#04231b",
+  shell800: "#063a2b",
+  shell700: "#075c43",
+  surface: "#f3f7f5",
+  border: "#e2e9e5",
+  text: "#0f1d17",
+  textMuted: "#5b6b63",
 };
 
 export const theme: ThemeConfig = {
@@ -21,6 +23,7 @@ export const theme: ThemeConfig = {
     colorSuccess: "#16a34a",
     colorWarning: "#d97706",
     colorError: "#dc2626",
+    colorLink: brand.primary,
     colorTextBase: brand.text,
     colorBgLayout: brand.surface,
     borderRadius: 10,
@@ -29,18 +32,18 @@ export const theme: ThemeConfig = {
     fontSize: 14,
     controlHeight: 38,
     boxShadowSecondary:
-      "0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.06)",
+      "0 1px 2px rgba(4,40,30,0.04), 0 8px 24px rgba(4,40,30,0.06)",
   },
   components: {
     Layout: {
       headerBg: "transparent",
       headerHeight: 60,
       bodyBg: brand.surface,
-      siderBg: brand.navy900,
+      siderBg: brand.shell900,
     },
     Menu: {
       darkItemBg: "transparent",
-      darkItemSelectedBg: "rgba(59,130,246,0.18)",
+      darkItemSelectedBg: "rgba(10,158,110,0.22)",
       darkItemHoverBg: "rgba(255,255,255,0.06)",
       darkItemColor: "rgba(255,255,255,0.72)",
       darkItemSelectedColor: "#ffffff",
@@ -52,16 +55,16 @@ export const theme: ThemeConfig = {
       paddingLG: 22,
     },
     Table: {
-      headerBg: "#f8fafc",
-      headerColor: "#475569",
+      headerBg: "#f1f6f3",
+      headerColor: "#475c53",
       headerSplitColor: "transparent",
-      rowHoverBg: "#f5f8ff",
+      rowHoverBg: "#eef6f2",
       cellPaddingBlock: 14,
     },
     Button: {
       controlHeight: 38,
       fontWeight: 500,
-      primaryShadow: "0 6px 16px rgba(37,99,235,0.24)",
+      primaryShadow: "0 6px 16px rgba(4,117,81,0.26)",
     },
     Statistic: {
       contentFontSize: 30,
@@ -76,7 +79,7 @@ export const STATUS_STYLE: Record<
 > = {
   NEW: { bg: "#f1f5f9", color: "#475569", dot: "#64748b", label: "New" },
   ASSIGNED: { bg: "#eef2ff", color: "#4338ca", dot: "#6366f1", label: "Assigned" },
-  IN_PROGRESS: { bg: "#eff6ff", color: "#1d4ed8", dot: "#2563eb", label: "In Progress" },
+  IN_PROGRESS: { bg: "#e6f5ef", color: "#047551", dot: "#0a9e6e", label: "In Progress" },
   ON_HOLD: { bg: "#fff7ed", color: "#b45309", dot: "#f59e0b", label: "On Hold" },
   RESOLVED: { bg: "#ecfdf5", color: "#15803d", dot: "#16a34a", label: "Resolved" },
   CLOSED: { bg: "#f1f5f9", color: "#475569", dot: "#94a3b8", label: "Closed" },
@@ -91,5 +94,5 @@ export const PRIORITY_STYLE: Record<
   CRITICAL: { bg: "#dc2626", color: "#ffffff", label: "Critical" },
   HIGH: { bg: "#ea580c", color: "#ffffff", label: "High" },
   MEDIUM: { bg: "#f59e0b", color: "#ffffff", label: "Medium" },
-  LOW: { bg: "#0ea5e9", color: "#ffffff", label: "Low" },
+  LOW: { bg: "#0d9488", color: "#ffffff", label: "Low" },
 };

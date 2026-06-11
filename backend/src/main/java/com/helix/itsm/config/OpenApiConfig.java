@@ -12,7 +12,7 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI helixItsmOpenAPI() {
         return new OpenAPI().info(new Info()
-                .title("Helix ITSM API")
+                .title("Khadamatech API")
                 .description("Incident Management API (pilot)")
                 .version("v0.1.0")
                 .license(new License().name("Proprietary")));

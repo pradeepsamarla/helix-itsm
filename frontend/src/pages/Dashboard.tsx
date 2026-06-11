@@ -53,17 +53,17 @@ export default function Dashboard() {
     {
       label: "Total Incidents",
       value: stats.total,
-      accent: "#2563eb",
-      iconBg: "#eff6ff",
-      iconColor: "#2563eb",
+      accent: "#047551",
+      iconBg: "#e6f5ef",
+      iconColor: "#047551",
       icon: <FileTextFilled />,
     },
     {
       label: "Open",
       value: stats.open,
-      accent: "#0ea5e9",
-      iconBg: "#e0f2fe",
-      iconColor: "#0284c7",
+      accent: "#0d9488",
+      iconBg: "#e0f2f1",
+      iconColor: "#0d9488",
       icon: <ClockCircleFilled />,
     },
     {

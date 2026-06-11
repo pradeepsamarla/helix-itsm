@@ -1,4 +1,4 @@
-# Helix ITSM (Pilot)
+# Khadamatech (Pilot)
 
 An open-source, BMC Helix ITSM–style service management platform. This pilot
 delivers **Incident Management** end-to-end (data model → REST API → web UI),

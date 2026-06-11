@@ -30,7 +30,7 @@ function crumbsFor(pathname: string): string[] {
     return ["Incident Management", "Incidents", "New Incident"];
   if (pathname.startsWith("/incidents/")) return ["Incident Management", "Incidents", "Detail"];
   if (pathname.startsWith("/incidents")) return ["Incident Management", "Incidents"];
-  return ["Helix"];
+  return ["Khadamatech"];
 }
 
 export default function App() {
@@ -48,9 +48,9 @@ export default function App() {
     <Layout style={{ minHeight: "100vh" }}>
       <Header className="app-header">
         <div className="brand">
-          <div className="brand-logo">H</div>
+          <div className="brand-logo">K</div>
           <div>
-            <div className="brand-name">Helix ITSM</div>
+            <div className="brand-name">Khadamatech</div>
             <div className="brand-sub">Service Management</div>
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function App() {
             <BellOutlined className="header-icon-btn" />
           </Tooltip>
           <Avatar
-            style={{ background: "#2563eb", fontWeight: 600 }}
+            style={{ background: "#047551", fontWeight: 600 }}
             size={34}
           >
             AD

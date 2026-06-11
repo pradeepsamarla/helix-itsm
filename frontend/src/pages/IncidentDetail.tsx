@@ -171,8 +171,8 @@ export default function IncidentDetail() {
                     avatar={
                       <Avatar
                         style={{
-                          background: c.internal ? "#fef3c7" : "#e0e7ff",
-                          color: c.internal ? "#b45309" : "#4338ca",
+                          background: c.internal ? "#fef3c7" : "#d7ede5",
+                          color: c.internal ? "#b45309" : "#047551",
                           fontWeight: 700,
                         }}
                       >
