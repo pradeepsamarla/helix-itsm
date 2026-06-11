@@ -1,21 +1,24 @@
 import { useCallback, useEffect, useState } from "react";
 import {
+  Avatar,
   Button,
   Card,
   Checkbox,
   Col,
   Descriptions,
-  Divider,
+  Empty,
   Input,
   List,
   Row,
   Select,
   Space,
   Spin,
+  Tag,
   Timeline,
   Typography,
   message,
 } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import {
@@ -68,9 +71,7 @@ export default function IncidentDetail() {
         message.success(ok);
         load();
       })
-      .catch((e) =>
-        message.error(e?.response?.data?.message ?? "Update failed")
-      );
+      .catch((e) => message.error(e?.response?.data?.message ?? "Update failed"));
   };
 
   const submitComment = () => {
@@ -85,7 +86,11 @@ export default function IncidentDetail() {
   };
 
   if (loading || !incident) {
-    return <Spin />;
+    return (
+      <div style={{ display: "grid", placeItems: "center", padding: 80 }}>
+        <Spin size="large" />
+      </div>
+    );
   }
 
   const refOptions = (refs: Ref[]) =>
@@ -93,32 +98,56 @@ export default function IncidentDetail() {
 
   return (
     <div>
-      <Space style={{ marginBottom: 16 }}>
-        <Button onClick={() => navigate("/incidents")}>← Back</Button>
-        <Typography.Title level={3} style={{ margin: 0 }}>
-          {incident.number}
-        </Typography.Title>
-        <StatusTag value={incident.status} />
-        <PriorityTag value={incident.priority} />
-      </Space>
+      <Button
+        type="text"
+        icon={<ArrowLeftOutlined />}
+        style={{ marginBottom: 8, paddingLeft: 0 }}
+        onClick={() => navigate("/incidents")}
+      >
+        Back to incidents
+      </Button>
 
-      <Row gutter={16}>
-        <Col span={16}>
-          <Card title={incident.title} style={{ marginBottom: 16 }}>
-            <Typography.Paragraph>
+      <div className="detail-hero">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            flexWrap: "wrap",
+          }}
+        >
+          <span
+            className="incident-num-link"
+            style={{ fontSize: 22, fontWeight: 800 }}
+          >
+            {incident.number}
+          </span>
+          <StatusTag value={incident.status} />
+          <PriorityTag value={incident.priority} />
+          {incident.slaBreached && <Tag color="error">SLA Breached</Tag>}
+        </div>
+        <Typography.Title level={4} style={{ margin: "12px 0 0" }}>
+          {incident.title}
+        </Typography.Title>
+      </div>
+
+      <Row gutter={[18, 18]}>
+        <Col xs={24} lg={16}>
+          <Card className="section-card" title="Details" style={{ marginBottom: 18 }}>
+            <Typography.Paragraph style={{ marginBottom: 18 }}>
               {incident.description || (
                 <Typography.Text type="secondary">No description</Typography.Text>
               )}
             </Typography.Paragraph>
 
-            <Descriptions column={2} size="small" bordered>
+            <Descriptions column={{ xs: 1, sm: 2 }} size="middle" bordered>
               <Descriptions.Item label="Impact">{incident.impact}</Descriptions.Item>
               <Descriptions.Item label="Urgency">{incident.urgency}</Descriptions.Item>
               <Descriptions.Item label="Category">
-                {incident.category?.name ?? "-"}
+                {incident.category?.name ?? "—"}
               </Descriptions.Item>
               <Descriptions.Item label="Reporter">
-                {incident.reporter?.name ?? "-"}
+                {incident.reporter?.name ?? "—"}
               </Descriptions.Item>
               <Descriptions.Item label="Created">
                 {dayjs(incident.createdAt).format("MMM D, YYYY HH:mm")}
@@ -126,26 +155,35 @@ export default function IncidentDetail() {
               <Descriptions.Item label="SLA Due">
                 {incident.slaDueAt
                   ? dayjs(incident.slaDueAt).format("MMM D, YYYY HH:mm")
-                  : "-"}
+                  : "—"}
                 {incident.slaBreached ? " (breached)" : ""}
               </Descriptions.Item>
             </Descriptions>
           </Card>
 
-          <Card title="Work Notes & Comments" style={{ marginBottom: 16 }}>
+          <Card className="section-card" title="Work Notes & Comments">
             <List
               dataSource={incident.comments}
-              locale={{ emptyText: "No comments yet" }}
+              locale={{ emptyText: <Empty description="No comments yet" /> }}
               renderItem={(c) => (
                 <List.Item>
                   <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        style={{
+                          background: c.internal ? "#fef3c7" : "#e0e7ff",
+                          color: c.internal ? "#b45309" : "#4338ca",
+                          fontWeight: 700,
+                        }}
+                      >
+                        {(c.author?.name ?? "S").slice(0, 1).toUpperCase()}
+                      </Avatar>
+                    }
                     title={
                       <Space>
                         <span>{c.author?.name ?? "System"}</span>
-                        {c.internal && (
-                          <Typography.Text type="warning">[internal]</Typography.Text>
-                        )}
-                        <Typography.Text type="secondary">
+                        {c.internal && <Tag color="warning">Internal</Tag>}
+                        <Typography.Text type="secondary" style={{ fontWeight: 400 }}>
                           {dayjs(c.createdAt).format("MMM D, HH:mm")}
                         </Typography.Text>
                       </Space>
@@ -155,32 +193,40 @@ export default function IncidentDetail() {
                 </List.Item>
               )}
             />
-            <Divider />
-            <Input.TextArea
-              rows={3}
-              value={commentBody}
-              placeholder="Add a comment or work note"
-              onChange={(e) => setCommentBody(e.target.value)}
-            />
-            <div style={{ marginTop: 8, display: "flex", justifyContent: "space-between" }}>
-              <Checkbox
-                checked={commentInternal}
-                onChange={(e) => setCommentInternal(e.target.checked)}
+            <div style={{ marginTop: 12 }}>
+              <Input.TextArea
+                rows={3}
+                value={commentBody}
+                placeholder="Add a comment or work note"
+                onChange={(e) => setCommentBody(e.target.value)}
+              />
+              <div
+                style={{
+                  marginTop: 10,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
               >
-                Internal work note
-              </Checkbox>
-              <Button type="primary" onClick={submitComment}>
-                Add
-              </Button>
+                <Checkbox
+                  checked={commentInternal}
+                  onChange={(e) => setCommentInternal(e.target.checked)}
+                >
+                  Internal work note
+                </Checkbox>
+                <Button type="primary" onClick={submitComment}>
+                  Add Note
+                </Button>
+              </div>
             </div>
           </Card>
         </Col>
 
-        <Col span={8}>
-          <Card title="Actions" style={{ marginBottom: 16 }}>
+        <Col xs={24} lg={8}>
+          <Card className="section-card" title="Actions" style={{ marginBottom: 18 }}>
             <Typography.Text strong>Status</Typography.Text>
             <Select
-              style={{ width: "100%", marginTop: 4, marginBottom: 16 }}
+              style={{ width: "100%", marginTop: 6, marginBottom: 16 }}
               value={incident.status}
               onChange={(v: IncidentStatus) => patch({ status: v }, "Status updated")}
               options={[incident.status, ...incident.allowedNextStatuses].map((s) => ({
@@ -192,7 +238,7 @@ export default function IncidentDetail() {
 
             <Typography.Text strong>Assignee</Typography.Text>
             <Select
-              style={{ width: "100%", marginTop: 4, marginBottom: 16 }}
+              style={{ width: "100%", marginTop: 6, marginBottom: 16 }}
               allowClear
               showSearch
               optionFilterProp="label"
@@ -204,7 +250,7 @@ export default function IncidentDetail() {
 
             <Typography.Text strong>Group</Typography.Text>
             <Select
-              style={{ width: "100%", marginTop: 4 }}
+              style={{ width: "100%", marginTop: 6 }}
               allowClear
               placeholder="No group"
               value={incident.assignedGroup?.id}
@@ -213,7 +259,7 @@ export default function IncidentDetail() {
             />
           </Card>
 
-          <Card title="Resolution" style={{ marginBottom: 16 }}>
+          <Card className="section-card" title="Resolution" style={{ marginBottom: 18 }}>
             <Input.TextArea
               rows={4}
               value={resolution}
@@ -221,23 +267,26 @@ export default function IncidentDetail() {
               onChange={(e) => setResolution(e.target.value)}
             />
             <Button
-              style={{ marginTop: 8 }}
+              type="primary"
+              ghost
+              style={{ marginTop: 10 }}
               onClick={() => patch({ resolution }, "Resolution saved")}
             >
               Save Resolution
             </Button>
           </Card>
 
-          <Card title="Activity">
+          <Card className="section-card" title="Activity">
             {incident.activity.length === 0 ? (
               <Typography.Text type="secondary">No activity yet</Typography.Text>
             ) : (
               <Timeline
                 items={incident.activity.map((a) => ({
+                  color: "blue",
                   children: (
                     <span>
-                      <strong>{a.field}</strong>: {a.oldValue ?? "-"} →{" "}
-                      {a.newValue ?? "-"}
+                      <strong>{a.field}</strong>: {a.oldValue ?? "—"} →{" "}
+                      {a.newValue ?? "—"}
                       <br />
                       <Typography.Text type="secondary">
                         {dayjs(a.createdAt).format("MMM D, HH:mm")}

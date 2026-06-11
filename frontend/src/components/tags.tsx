@@ -1,27 +1,21 @@
-import { Tag } from "antd";
 import { IncidentStatus, Priority } from "../api/types";
-
-const PRIORITY_COLORS: Record<Priority, string> = {
-  CRITICAL: "red",
-  HIGH: "volcano",
-  MEDIUM: "gold",
-  LOW: "blue",
-};
-
-const STATUS_COLORS: Record<IncidentStatus, string> = {
-  NEW: "default",
-  ASSIGNED: "cyan",
-  IN_PROGRESS: "processing",
-  ON_HOLD: "orange",
-  RESOLVED: "green",
-  CLOSED: "default",
-  CANCELLED: "default",
-};
-
-export function PriorityTag({ value }: { value: Priority }) {
-  return <Tag color={PRIORITY_COLORS[value]}>{value}</Tag>;
-}
+import { PRIORITY_STYLE, STATUS_STYLE } from "../theme";
 
 export function StatusTag({ value }: { value: IncidentStatus }) {
-  return <Tag color={STATUS_COLORS[value]}>{value.replace("_", " ")}</Tag>;
+  const s = STATUS_STYLE[value];
+  return (
+    <span className="pill" style={{ background: s.bg, color: s.color }}>
+      <span className="pill-dot" style={{ background: s.dot }} />
+      {s.label}
+    </span>
+  );
+}
+
+export function PriorityTag({ value }: { value: Priority }) {
+  const p = PRIORITY_STYLE[value];
+  return (
+    <span className="badge-solid" style={{ background: p.bg, color: p.color }}>
+      {p.label}
+    </span>
+  );
 }
