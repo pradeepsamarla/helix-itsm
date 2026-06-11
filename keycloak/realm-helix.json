@@ -1,0 +1,47 @@
+{
+  "realm": "helix-itsm",
+  "enabled": true,
+  "registrationAllowed": false,
+  "roles": {
+    "realm": [
+      { "name": "END_USER" },
+      { "name": "AGENT" },
+      { "name": "ADMIN" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "helix-itsm-web",
+      "name": "Helix ITSM Web",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["http://localhost:5173/*", "http://localhost:3000/*"],
+      "webOrigins": ["http://localhost:5173", "http://localhost:3000"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "enabled": true,
+      "email": "admin@helix.local",
+      "firstName": "System",
+      "lastName": "Administrator",
+      "credentials": [{ "type": "password", "value": "admin", "temporary": false }],
+      "realmRoles": ["ADMIN"]
+    },
+    {
+      "username": "agent1",
+      "enabled": true,
+      "email": "agent1@helix.local",
+      "firstName": "Alice",
+      "lastName": "Agent",
+      "credentials": [{ "type": "password", "value": "agent", "temporary": false }],
+      "realmRoles": ["AGENT"]
+    }
+  ]
+}
