@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: helix-itsm
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/itsm}
+    username: ${DB_USERNAME:itsm}
+    password: ${DB_PASSWORD:itsm}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      repositories:
+        enabled: false
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+
+itsm:
+  security:
+    # When dev-mode is true, the API is open (no JWT required) so the pilot runs
+    # without Keycloak wired in. Set to false to enforce OAuth2/JWT via Keycloak.
+    dev-mode: ${ITSM_SECURITY_DEV_MODE:true}
+  cors:
+    allowed-origins: ${ITSM_CORS_ORIGINS:http://localhost:5173,http://localhost:3000}
+
+# Keycloak / OAuth2 resource server settings (used when dev-mode=false)
+keycloak:
+  issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8081/realms/helix-itsm}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    show-sql: false
+logging:
+  level:
+    com.helix.itsm: DEBUG
